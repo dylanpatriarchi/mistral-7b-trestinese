@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Training Output
+output/
+checkpoints/
+checkpoint-*/
+runs/
+logs/
+
+# Data (keep dataset.jsonl but ignore processed data)
+data/
+*.csv
+*.tsv
+
+# Evaluation Results
+evaluation_results/
+predictions/
+translations.jsonl
+
+# Model Files (too large for git)
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+fine_tuned_model.zip
+
+# W&B
+wandb/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Cache
+.cache/
+*.cache
+
+# Environment Variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+
