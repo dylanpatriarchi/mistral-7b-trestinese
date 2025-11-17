@@ -31,7 +31,7 @@ A professional fine-tuning pipeline for Mistral-7B to translate Italian to Trest
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/dylanpatriarchi/mistral-7b-trestinese
 cd mistral-7b-trestinese
 
 # Create virtual environment
@@ -521,7 +521,7 @@ If you use this code, please cite:
   title = {Mistral-7B Trestinese Fine-Tuning},
   author = {Your Name},
   year = {2024},
-  url = {https://github.com/yourusername/mistral-7b-trestinese}
+  url = {https://github.com/dylanpatriarchi/mistral-7b-trestinese}
 }
 ```
 
