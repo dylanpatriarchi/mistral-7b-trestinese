@@ -216,7 +216,7 @@ def setup_training_arguments(config: dict) -> TrainingArguments:
         save_total_limit=train_config['save_total_limit'],
         
         # Evaluation
-        evaluation_strategy=train_config['evaluation_strategy'],
+        eval_strategy=train_config.get('eval_strategy', train_config.get('evaluation_strategy', 'steps')),
         load_best_model_at_end=train_config['load_best_model_at_end'],
         metric_for_best_model=train_config['metric_for_best_model'],
         greater_is_better=train_config['greater_is_better'],
