@@ -26,21 +26,48 @@ class TrestineseTranslatorApp:
         print("✅ Model loaded!")
     
     def load_model(self, model_path: str, base_model: str):
-        """Load the fine-tuned model."""
+        """Load the fine-tuned model with 4-bit quantization for Colab."""
+        from transformers import BitsAndBytesConfig
+        import os
+        
         # Load tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
         self.tokenizer.pad_token = self.tokenizer.eos_token
         
-        # Load base model
-        base = AutoModelForCausalLM.from_pretrained(
-            base_model,
-            torch_dtype=torch.bfloat16,
-            device_map="auto"
-        )
+        # Check if model is already merged (no adapter_config.json)
+        adapter_config_path = os.path.join(model_path, "adapter_config.json")
+        is_merged = not os.path.exists(adapter_config_path)
         
-        # Load adapters
-        self.model = PeftModel.from_pretrained(base, model_path)
-        self.model = self.model.merge_and_unload()
+        if is_merged:
+            # Model is already merged, load directly
+            print("Loading merged model...")
+            self.model = AutoModelForCausalLM.from_pretrained(
+                model_path,
+                dtype=torch.bfloat16,
+                device_map="auto",
+                low_cpu_mem_usage=True
+            )
+        else:
+            # Model has adapters, use 4-bit quantization to save memory
+            print("Loading model with 4-bit quantization...")
+            quantization_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4"
+            )
+            
+            # Load base model with 4-bit quantization
+            base = AutoModelForCausalLM.from_pretrained(
+                base_model,
+                quantization_config=quantization_config,
+                device_map="auto",
+                low_cpu_mem_usage=True
+            )
+            
+            # Load adapters (no merge needed with quantized model)
+            self.model = PeftModel.from_pretrained(base, model_path)
+        
         self.model.eval()
     
     def translate(
